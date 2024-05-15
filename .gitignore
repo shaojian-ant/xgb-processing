@@ -1,0 +1,9 @@
+# Bazel files
+bazel-*
+
+# Temp IDE files
+*.pdb
+/.idea
+/.vscode
+CMakeLists.txt
+cmake-*
