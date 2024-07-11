@@ -41,6 +41,14 @@ class HeuProcessor : public Processor {
 
   std::vector<double> HandleAggregation(void *buffer, size_t buf_size) override;
 
+  void *ProcessHistograms(size_t *, const std::vector<double> &) override {
+    YACL_THROW("not implemented");
+  }
+
+  std::vector<double> HandleHistograms(void *, size_t) override {
+    YACL_THROW("not implemented");
+  }
+
  private:
   bool active_ = false;
   int64_t scale_ = 0;

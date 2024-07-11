@@ -25,13 +25,13 @@ class ProcessorTest : public testing::Test {
         {kLibraryPath, "processing/plugins"}};
     auto loader = processing::ProcessorLoader(params);
 
-    active_processor_ = loader.load("heu");
+    active_processor_ = loader.Load("heu");
     active_processor_->Initialize(true,
                                   {{"PUBLIC_KEY_PATH", "processing/plugins"},
                                    {"SECRET_KEY_PATH", "processing/plugins"},
                                    {"scale", "1000000"}});
 
-    passive_processor_ = loader.load("heu");
+    passive_processor_ = loader.Load("heu");
     passive_processor_->Initialize(false,
                                    {{"PUBLIC_KEY_PATH", "processing/plugins"}});
   }

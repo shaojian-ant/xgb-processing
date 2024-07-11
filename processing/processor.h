@@ -3,7 +3,6 @@
  */
 #pragma once
 
-#include <any>
 #include <cstdint>
 #include <map>
 #include <string>
@@ -97,22 +96,44 @@ class Processor {
    */
   virtual std::vector<double> HandleAggregation(void *buffer,
                                                 size_t buf_size) = 0;
+
+  /*!
+   * \brief Prepare histograms for further processing
+   *
+   * \param size The output buffer size
+   * \param histograms Flattened array of histograms for all features
+   *
+   * \return The encoded buffer to be sent via AllGatherV
+   */
+  virtual void *ProcessHistograms(size_t *size,
+                                  const std::vector<double> &histograms) = 0;
+
+  /*!
+   * \brief Handle processed histograms
+   *
+   * \param buffer Buffer from allgatherV
+   * \param buf_size The size of the buffer
+   *
+   * \return A flattened vector of histograms for all features
+   */
+  virtual std::vector<double> HandleHistograms(void *buffer,
+                                               size_t buf_size) = 0;
 };
 
 class ProcessorLoader {
  private:
-  std::map<std::string, std::string> params;
-  void *handle_ = NULL;
+  std::map<std::string, std::string> params_;
+  void *handle_ = nullptr;
 
  public:
-  ProcessorLoader() : params{} {}
+  ProcessorLoader() : params_{} {}
 
   explicit ProcessorLoader(const std::map<std::string, std::string> &params)
-      : params(params) {}
+      : params_(params) {}  // NOLINT
 
-  Processor *load(const std::string &plugin_name);
+  Processor *Load(const std::string &plugin_name);
 
-  void unload();
+  void Unload();
 };
 
 }  // namespace processing
